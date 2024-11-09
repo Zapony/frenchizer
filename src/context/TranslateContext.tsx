@@ -14,8 +14,8 @@ interface TranslateProviderProps {
 }
 
 export const TranslateProvider = ({ children }: TranslateProviderProps) => {
-    const [text, setText] = useState('This is it');
-    const [translatedText, setTranslatedText] = useState('');
+    const [text, setText] = useState('');
+    const [translatedText, setTranslatedText] = useState('Vaibhav');
 
     return (
         <TranslateContext.Provider value={{ text, setText, translatedText, setTranslatedText }}>

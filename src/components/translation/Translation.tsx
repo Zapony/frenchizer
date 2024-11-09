@@ -16,9 +16,11 @@ const Translation = () => {
         }
 
         try {
-            const response = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=de&dt=t&q=${text}`, {
+            const response = await fetch(`/api/translate`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify({ text: inputText, targetLanguage: 'fr' }) // or 'en' based on your props/state
             });
 
