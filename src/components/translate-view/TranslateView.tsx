@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslate } from '@/context/TranslateContext';
 import React, { useState } from 'react'
 import { BsGlobe2 } from "react-icons/bs";
 
@@ -13,7 +14,7 @@ const TranslateView = ({
     isFrom,
     language
 }: TranslateViewProps) => {
-    const [isDropdownOpen, setDropdownOpen] = useState(false);
+    const { text, setText } = useTranslate();
     const [selectedOption, setSelectedOption] = useState(language);
     const [charCount, setCharCount] = useState(0);
     return (
@@ -33,9 +34,13 @@ const TranslateView = ({
 
                 <div className="relative mb-4">
                     <textarea
-                        onChange={(e) => setCharCount(e.target.value.length)}
+                        onChange={(e) => {
+                            setCharCount(e.target.value.length);
+                            setText?.(e.target.value);
+                        }}
+                        value={isFrom ? text : ''}
                         maxLength={5000}
-                        placeholder="Enter your text here"
+                        placeholder={isFrom ? 'Type here...' : 'Translation will appear here...'}
                         className="w-full p-3 bg-transparent border-none outline-none text-lg text-gray-700 font-bold resize-none"
                         rows={10}
                         cols={50}

@@ -1,10 +1,9 @@
-import { TranslateView } from "@/components";
+import Translation from "@/components/translation/Translation";
 
 export default function Home() {
   return (
-    <div className="h-screen flex items-center justify-center gap-6">
-      <TranslateView isFrom={true} language="English" />
-      <TranslateView isFrom={false} language="French" />
+    <div className="">
+      <Translation />
     </div>
   );
 }
