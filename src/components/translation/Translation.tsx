@@ -4,9 +4,11 @@ import { useEffect } from 'react';
 import { useTranslate } from '@/context/TranslateContext';
 import TranslateView from '../translate-view/TranslateView';
 import debounce from 'lodash.debounce';
+import SwapButton from '../swap-button/SwapButton';
 
 const Translation = () => {
-    const { text, setTranslatedText } = useTranslate();
+    const { text, setTranslatedText, targetLanguage } = useTranslate();
+    const tarLang = targetLanguage.toLowerCase().substring(0, 2);
 
     // Function to call Google Translate API
     const translateText = async (inputText: string) => {
@@ -21,7 +23,10 @@ const Translation = () => {
                 headers: { 
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ text: inputText, targetLanguage: 'fr' }) // or 'en' based on your props/state
+                body: JSON.stringify({ 
+                    text: inputText, 
+                    targetLanguage: tarLang
+                })
             });
 
             const { translatedText } = await response.json();
@@ -38,12 +43,13 @@ const Translation = () => {
         return () => debouncedTranslate.cancel();
     }, [text]);
 
-    console.log('text:', text);
-
     return (
-        <div className="h-screen flex items-center justify-center gap-6">
-            <TranslateView isFrom={true} language="English" />
-            <TranslateView isFrom={false} language="French" />
+        <div className="min-h-screen flex flex-col p-4 md:flex-row items-center justify-center gap-6">
+            <div className="flex flex-col p-4 md:flex-row items-start justify-center gap-4">
+                <TranslateView isFrom={true} />
+                <SwapButton />
+                <TranslateView isFrom={false} />
+            </div>
         </div>
     );
 };
