@@ -45,7 +45,7 @@ const Translation = () => {
 
     return (
         <div className="min-h-screen flex flex-col p-4 md:flex-row items-center justify-center gap-6">
-            <div className="flex flex-col p-4 md:flex-row items-start justify-center gap-4">
+            <div className="flex flex-col md:flex-row items-start justify-center gap-4">
                 <TranslateView isFrom={true} />
                 <SwapButton />
                 <TranslateView isFrom={false} />
