@@ -18,7 +18,7 @@ const Translation = () => {
         }
 
         try {
-            const response = await fetch(`/api/translate`, {
+            const response = await fetch(`https://frenchizer.com/api/translate`, {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json'
@@ -28,7 +28,7 @@ const Translation = () => {
                     targetLanguage: tarLang
                 })
             });
-
+            
             const { translatedText } = await response.json();
             setTranslatedText(translatedText);
         } catch (error) {
@@ -36,18 +36,28 @@ const Translation = () => {
         }
     };
 
-    const debouncedTranslate = debounce(translateText, 500);
+    const debouncedTranslate = debounce(translateText, 1000);
+/*
+    // useEffect to call the debounced translation function when text changes
+    useEffect(() => {
+        if (text) {
+            debouncedTranslate(text);  // Will call translateText only after user stops typing
+        }
+        return () => debouncedTranslate.cancel();  // Cancel debounce on component unmount
+    }, [text]);  // Dependency on text state
+ */   
 
     useEffect(() => {
         debouncedTranslate(text);
         return () => debouncedTranslate.cancel();
     }, [text]);
 
+
     return (
         <div className="min-h-screen flex flex-col p-4 md:flex-row items-center justify-center gap-6">
             <div className="flex flex-col md:flex-row items-start justify-center gap-4">
                 <TranslateView isFrom={true} />
-                <SwapButton />
+                 {/* <SwapButton /> */}
                 <TranslateView isFrom={false} />
             </div>
         </div>
