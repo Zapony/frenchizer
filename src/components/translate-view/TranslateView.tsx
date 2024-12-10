@@ -19,38 +19,46 @@ const TranslateView = ({
         // Track the last translation sent to avoid duplicates
     const lastTranslationSent = useRef<string | null>(null);
     
-    const sendTranslationToServer = debounce(async (translationData: any) => {
-        try {
-            const response = await fetch('https://frenchizer.com/api/saveTranslation', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(translationData),
-            });
-
-           /* if (response.ok) {
-                console.log('Translation saved successfully');
-            } else {
-                console.error('Failed to save translation');
-            }*/
-        } catch (error) {
-            console.error('Error sending translation to server:', error);
-        }
-    }, 2000);
-    
+    interface TranslationData {
+        source: string;
+        target: string;
+        needs_correction: boolean;
+        corrected: string;
+    }
 
     // Send translation when it is updated
     useEffect(() => {
-        if (translatedText && lastTranslationSent.current !== translatedText && sourceLanguage && targetLanguage) {
-            const translationData = {
-                source: text,
-                target: translatedText,
-                needs_correction: false, // To be updated
-                corrected: translatedText, // To be modified
-            };
-            sendTranslationToServer(translationData);
-            lastTranslationSent.current = translatedText;
+        if(!isFrom) {
+            const sendTranslationToServer = debounce(async (translationData: TranslationData) => {
+                try {
+                    const response = await fetch('/api/saveTranslation', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(translationData),
+                    });
+
+                    if (response.ok) {
+                        console.log('Translation saved successfully');
+                    } else {
+                        console.error('Failed to save translation');
+                    }
+                } catch (error) {
+                    console.error('Error sending translation to server:', error);
+                }
+            }, 4000);
+
+            if (translatedText && lastTranslationSent.current !== translatedText && sourceLanguage && targetLanguage) {
+                const translationData = {
+                    source: text,
+                    target: translatedText,
+                    needs_correction: false, // To be updated
+                    corrected: translatedText, // To be modified
+                };
+                sendTranslationToServer(translationData);
+                lastTranslationSent.current = translatedText;
+            }
         }
     }, [translatedText]); // Triggers when translatedText changes
 
@@ -72,7 +80,7 @@ const TranslateView = ({
                 <div className="relative mb-4">
                     <textarea
                         onChange={(e) => {
-                            const newText = e.target.value;
+                            // const newText = e.target.value;
                             setCharCount(e.target.value.length);
                             setText?.(e.target.value);
                         }}

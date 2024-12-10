@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useTranslate } from '@/context/TranslateContext';
 import TranslateView from '../translate-view/TranslateView';
 import debounce from 'lodash.debounce';
-import SwapButton from '../swap-button/SwapButton';
+// import SwapButton from '../swap-button/SwapButton';
 
 const Translation = () => {
     const { text, setTranslatedText, targetLanguage } = useTranslate();
@@ -18,7 +18,7 @@ const Translation = () => {
         }
 
         try {
-            const response = await fetch(`https://frenchizer.com/api/translate`, {
+            const response = await fetch(`/api/translate`, {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json'
